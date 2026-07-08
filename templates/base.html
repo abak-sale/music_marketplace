@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
+        /* Menggunakan flexbox agar jika halaman kekurangan konten, footer TETAP berada di paling bawah layar */
         body {
             display: flex;
             flex-direction: column;
@@ -19,9 +20,13 @@
         main {
             flex: 1;
         }
-        /* Style kustom tipis untuk menu kategori */
         .hover-dark:hover {
             color: #111 !important;
+        }
+        /* Efek hover tipis untuk link di footer */
+        .text-muted-hover:hover {
+            color: #ffc107 !important;
+            transition: 0.2s;
         }
     </style>
 </head>
@@ -35,6 +40,8 @@
             {% endblock %}
         </div>
     </main>
+
+    {% include 'includes/footer.html' %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

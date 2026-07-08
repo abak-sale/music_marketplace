@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Aplikasi buatan kita akan dimasukkan di bawah sini nanti...
     'homepage.apps.HomepageConfig',
+    'products.apps.ProductsConfig',
 ]
 
 MIDDLEWARE = [
