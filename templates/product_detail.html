@@ -1,18 +1,109 @@
 {% extends 'base.html' %}
-
-{% block title %}{{ product.name }} - Abak Sale Marketplace{% endblock %}
+{% load humanize %}
+{% load custom_tags %} {% block title %}{{ product.name }} - Abak Sale Marketplace{% endblock %}
 
 {% block content %}
+<style>
+    /* Styling khusus efek zoom kaca pembesar ala Reverb */
+    .zoom-container {
+        position: relative;
+        overflow: hidden;
+        cursor: zoom-in;
+        background-color: #fff;
+    }
+    .zoom-container img {
+        transition: transform 0.1s ease-out;
+        width: 100%;
+        height: auto;
+        max-height: 500px;
+        object-fit: contain;
+    }
+    .zoom-icon {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        pointer-events: none;
+        z-index: 5;
+    }
+    .thumbnail-img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: 0.2s;
+    }
+    .thumbnail-img.active, .thumbnail-img:hover {
+        border-color: #f05a28; 
+    }
+    .nav-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #ddd;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: 0.2s;
+    }
+    .nav-arrow:hover {
+        background: #f05a28;
+        color: white;
+        border-color: #f05a28;
+    }
+    .arrow-left { left: 10px; }
+    .arrow-right { right: 10px; }
+</style>
+
 <div class="row g-4 mt-2">
     <div class="col-md-7">
-        <div class="card border-0 shadow-sm rounded-3 p-2 bg-white">
-            {% if product.image %}
-                <img src="{{ product.image.url }}" class="img-fluid rounded-3 object-fit-contain" alt="{{ product.name }}" style="max-height: 500px; width: 100%;">
-            {% else %}
-                <div class="bg-secondary text-white d-flex align-items-center justify-content-center rounded-3" style="height: 400px;">
-                    <i class="fa-solid fa-guitar display-1 opacity-50"></i>
+        <div class="card border-0 shadow-sm rounded-3 p-3 bg-white position-relative">
+            
+            <div class="nav-arrow arrow-left" id="prevBtn">
+                <i class="fa-solid fa-chevron-left"></i>
+            </div>
+
+            <div class="zoom-container rounded-3 text-center" id="zoomWrapper">
+                <div class="zoom-icon">
+                    <i class="fa-solid fa-magnifying-glass text-dark"></i>
                 </div>
-            {% endif %}
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" id="mainProductImg" alt="{{ product.name }}">
+                {% else %}
+                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center rounded-3" style="height: 400px;" id="placeholderWrapper">
+                        <i class="fa-solid fa-guitar display-1 opacity-50"></i>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="nav-arrow arrow-right" id="nextBtn">
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+
+            <div class="d-flex gap-2 mt-3 flex-wrap justify-content-center" id="thumbnailRow">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="thumbnail-img rounded bg-light active" onclick="changeImage(this.src, 0)">
+                {% endif %}
+                
+                {% for extra in product.images.all %}
+                    <img src="{{ extra.image.url }}" class="thumbnail-img rounded bg-light" onclick="changeImage(this.src, {{ forloop.counter }})">
+                {% endfor %}
+            </div>
         </div>
     </div>
 
@@ -35,7 +126,7 @@
 
             <div class="my-4">
                 <label class="text-muted small d-block">Harga Terbuka</label>
-                <h2 class="text-danger fw-bold display-6">Rp {{ product.price|floatformat:0 }}</h2>
+                <h2 class="text-danger fw-bold display-6">Rp {{ product.price|floatformat:0|intcomma|replace_commas }}</h2>
             </div>
 
             <div class="d-grid gap-2 mt-4">
@@ -55,4 +146,56 @@
         </div>
     </div>
 </div>
+
+<script>
+    const mainImg = document.getElementById('mainProductImg');
+    const zoomWrapper = document.getElementById('zoomWrapper');
+    const thumbnails = document.querySelectorAll('.thumbnail-img');
+    let currentIndex = 0;
+
+    const imagesList = [];
+    thumbnails.forEach(thumb => imagesList.push(thumb.src));
+
+    function changeImage(src, index) {
+        if(mainImg) {
+            mainImg.src = src;
+            currentIndex = index;
+            thumbnails.forEach(t => t.classList.remove('active'));
+            thumbnails[index].classList.add('active');
+        }
+    }
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+        if(imagesList.length > 1) {
+            currentIndex = (currentIndex + 1) % imagesList.length;
+            changeImage(imagesList[currentIndex], currentIndex);
+        }
+    });
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+        if(imagesList.length > 1) {
+            currentIndex = (currentIndex - 1 + imagesList.length) % imagesList.length;
+            changeImage(imagesList[currentIndex], currentIndex);
+        }
+    });
+
+    if(mainImg) {
+        zoomWrapper.addEventListener('mousemove', (e) => {
+            const rect = zoomWrapper.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const xPercent = (x / rect.width) * 100;
+            const yPercent = (y / rect.height) * 100;
+            
+            mainImg.style.transformOrigin = `${xPercent}% ${yPercent}%`;
+            mainImg.style.transform = 'scale(2)';
+        });
+
+        zoomWrapper.addEventListener('mouseleave', () => {
+            mainImg.style.transformOrigin = 'center center';
+            mainImg.style.transform = 'scale(1)';
+        });
+    }
+</script>
 {% endblock %}

@@ -1,20 +1,14 @@
 import os
 from pathlib import Path
 
-# Jalur dasar proyek (music_marketplace/)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# KEAMANAN: Jangan gunakan ini di produksi rahasia!
-SECRET_KEY = 'django-insecure-ganti-ini-nanti-saat-live-marketplace'
+SECRET_KEY = 'django-insecure-key-substitusi-anda'
 
-# Jalankan dalam mode debug untuk melihat error secara detail saat develop
 DEBUG = True
 
-# Host yang diizinkan mengakses website ini di lokal
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = []
 
-
-# Aplikasi yang terdaftar di proyek ini
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -22,7 +16,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Aplikasi buatan kita akan dimasukkan di bawah sini nanti...
+    'django.contrib.humanize',  # Mengaktifkan fitur format ribuan angka uang
+
+    # App Lokal
     'homepage.apps.HomepageConfig',
     'products.apps.ProductsConfig',
 ]
@@ -42,8 +38,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # BEST PRACTICE: Mengarahkan Django ke folder templates/ di root project
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -58,8 +53,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
-# Database menggunakan SQLite3 (Sesuai panduan pemula)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -67,8 +60,6 @@ DATABASES = {
     }
 }
 
-
-# Validasi Password bawaan Django
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -84,8 +75,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Konfigurasi Bahasa dan Zona Waktu Indonesia
 LANGUAGE_CODE = 'id'
 
 TIME_ZONE = 'Asia/Jakarta'
@@ -94,14 +83,10 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Konfigurasi File Statis (CSS, JavaScript, Gambar Tema)
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-# Konfigurasi File Media (Gambar yang diupload penjual/user)
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Pengaturan ID otomatis bawaan untuk Model database
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
