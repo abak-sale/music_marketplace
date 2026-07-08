@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - Abak Sale Marketplace{% endblock %}
+
+{% block content %}
+<div class="row g-4 mt-2">
+    <div class="col-md-7">
+        <div class="card border-0 shadow-sm rounded-3 p-2 bg-white">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid rounded-3 object-fit-contain" alt="{{ product.name }}" style="max-height: 500px; width: 100%;">
+            {% else %}
+                <div class="bg-secondary text-white d-flex align-items-center justify-content-center rounded-3" style="height: 400px;">
+                    <i class="fa-solid fa-guitar display-1 opacity-50"></i>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="card border-0 shadow-sm rounded-3 p-4 bg-white h-100">
+            <div class="mb-3">
+                <span class="badge {% if product.condition == 'baru' %}bg-success{% else %}bg-secondary{% endif %} fs-6">
+                    {{ product.get_condition_display }}
+                </span>
+            </div>
+
+            <h1 class="fw-bold text-dark mb-2 fs-2">{{ product.name }}</h1>
+            
+            <p class="text-muted small mb-4">
+                <i class="fa-solid fa-location-dot me-1"></i>{{ product.location }} &bull; 
+                <i class="fa-regular fa-clock me-1"></i>{{ product.created_at|date:"d M Y" }}
+            </p>
+
+            <hr class="text-muted">
+
+            <div class="my-4">
+                <label class="text-muted small d-block">Harga Terbuka</label>
+                <h2 class="text-danger fw-bold display-6">Rp {{ product.price|floatformat:0 }}</h2>
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+                <a href="#" class="btn btn-success btn-lg py-3 fw-bold shadow-sm">
+                    <i class="fab fa-whatsapp me-2 fs-5"></i>Tanya Penjual via WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4 mb-5">
+    <div class="col-md-7">
+        <div class="card border-0 shadow-sm rounded-3 p-4 bg-white">
+            <h4 class="fw-bold text-dark mb-3">Deskripsi Alat Musik</h4>
+            <p class="text-secondary lh-base" style="white-space: pre-line;">{{ product.description }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
