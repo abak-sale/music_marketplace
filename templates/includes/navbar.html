@@ -1,0 +1,46 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top py-3">
+    <div class="container">
+        <a class="navbar-brand p-0" href="{% url 'home' %}">
+            <img src="{% static 'images/logo.png' %}" alt="Abak Sale Logo" height="55" class="d-inline-block align-top">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <form class="d-flex mx-lg-4 my-2 my-lg-0 flex-grow-1" role="search">
+                <div class="input-group">
+                    <input class="form-control bg-light border-end-0" type="search" placeholder="Cari gitar, efek, ampi, atau bass..." aria-label="Search">
+                    <button class="btn btn-outline-secondary bg-light border-start-0 text-muted" type="submit">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+            </form>
+
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item me-3">
+                    <a class="nav-link fw-medium text-secondary" href="#">Jual Alat Musik</a>
+                </li>
+                <li class="nav-item me-3">
+                    <a class="nav-link text-secondary" href="#" title="Masuk / Login">
+                        <i class="fa-regular fa-user fs-5"></i> <span class="d-lg-none ms-1">Akun</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="bg-light border-bottom d-none d-lg-block py-2">
+    <div class="container">
+        <div class="d-flex gap-4 small fw-medium text-secondary">
+            <a href="#" class="text-decoration-none text-secondary hover-dark">Gitar</a>
+            <a href="#" class="text-decoration-none text-secondary hover-dark">Bass</a>
+            <a href="#" class="text-decoration-none text-secondary hover-dark">Ampli</a>
+            <a href="#" class="text-decoration-none text-secondary hover-dark">Efek / Pedal</a>
+            <a href="#" class="text-decoration-none text-secondary hover-dark">Aksesoris</a>
+        </div>
+    </div>
+</div>
