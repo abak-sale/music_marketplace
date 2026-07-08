@@ -1,0 +1,28 @@
+# Virtual Environment
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+
+# Environment
+.env
+
+# VS Code
+.vscode/
+
+# Thonny
+.thonny/
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
