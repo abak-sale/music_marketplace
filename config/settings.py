@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Aplikasi buatan kita akan dimasukkan di bawah sini nanti...
+    'homepage.apps.HomepageConfig',
 ]
 
 MIDDLEWARE = [
