@@ -1,7 +1,6 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top py-3">
     <div class="container">
-        <!-- Logo Asli -->
         <a class="navbar-brand p-0" href="{% url 'home' %}">
             <img src="{% static 'images/logo.png' %}" alt="Abak Sale Logo" height="55" class="d-inline-block align-top">
         </a>
@@ -11,10 +10,9 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarContent">
-            <!-- Form Pencarian Asli -->
-            <form class="d-flex mx-lg-4 my-2 my-lg-0 flex-grow-1" role="search">
+            <form action="{% url 'home' %}" method="GET" class="d-flex mx-lg-4 my-2 my-lg-0 flex-grow-1" role="search">
                 <div class="input-group">
-                    <input class="form-control bg-light border-end-0" type="search" placeholder="Cari gitar, efek, ampi, atau bass..." aria-label="Search">
+                    <input class="form-control bg-light border-end-0" type="search" name="q" placeholder="Cari gitar, efek, ampi, atau bass..." value="{{ search_query|default:'' }}" aria-label="Search">
                     <button class="btn btn-outline-secondary bg-light border-start-0 text-muted" type="submit">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
@@ -22,7 +20,6 @@
             </form>
 
             <ul class="navbar-nav ms-auto align-items-center">
-                <!-- Menu Jual Alat Musik (Mengarahkan ke Dashboard jika sudah login) -->
                 <li class="nav-item me-3">
                     {% if request.user.is_authenticated %}
                         <a class="nav-link fw-medium text-secondary" href="{% url 'seller_dashboard' %}">Jual Alat Musik</a>
@@ -31,24 +28,14 @@
                     {% endif %}
                 </li>
                 
-                <!-- Menu Akun / User dengan Dropdown Kondisional -->
                 <li class="nav-item dropdown me-3">
                     {% if request.user.is_authenticated %}
-                        <!-- Jika Sudah Login: Tampilkan Dropdown menu Dashboard & Keluar -->
                         <a class="nav-link text-secondary dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Halo, {{ request.user.username }}">
                             <i class="fa-solid fa-user text-dark fs-5"></i> <span class="ms-1 d-lg-inline fw-semibold text-dark">{{ request.user.username }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 rounded-3" aria-labelledby="navbarUserDropdown">
-                            <li>
-                                <a class="dropdown-item fw-bold text-dark py-2" href="{% url 'seller_dashboard' %}">
-                                    <i class="fa-solid fa-gauge me-2 text-primary"></i>Dashboard Saya
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item fw-bold text-dark py-2" href="{% url 'product_create' %}">
-                                    <i class="fa-solid fa-plus me-2 text-success"></i>Tambah Dagangan
-                                </a>
-                            </li>
+                            <li><a class="dropdown-item fw-bold text-dark py-2" href="{% url 'seller_dashboard' %}"><i class="fa-solid fa-gauge me-2 text-primary"></i>Dashboard Saya</a></li>
+                            <li><a class="dropdown-item fw-bold text-dark py-2" href="{% url 'product_create' %}"><i class="fa-solid fa-plus me-2 text-success"></i>Tambah Dagangan</a></li>
                             <li><hr class="dropdown-divider opacity-25"></li>
                             <li>
                                 <form action="/accounts/logout/" method="POST" class="m-0 p-0">
@@ -60,7 +47,6 @@
                             </li>
                         </ul>
                     {% else %}
-                        <!-- Jika Belum Login: Tetap mempertahankan tampilan ikon biasa -->
                         <a class="nav-link text-secondary dropdown-toggle" href="#" id="navbarAuthDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Masuk / Login">
                             <i class="fa-regular fa-user fs-5"></i> <span class="d-lg-none ms-1">Akun</span>
                         </a>
@@ -75,15 +61,18 @@
     </div>
 </nav>
 
-<!-- Baris Kategori Asli (Sama Sekali Tidak Diubah) -->
+{% load custom_tags %}
+{% get_categories as categories %}
+
 <div class="bg-light border-bottom d-none d-lg-block py-2">
     <div class="container">
         <div class="d-flex gap-4 small fw-medium text-secondary">
-            <a href="#" class="text-decoration-none text-secondary hover-dark">Gitar</a>
-            <a href="#" class="text-decoration-none text-secondary hover-dark">Bass</a>
-            <a href="#" class="text-decoration-none text-secondary hover-dark">Ampli</a>
-            <a href="#" class="text-decoration-none text-secondary hover-dark">Efek / Pedal</a>
-            <a href="#" class="text-decoration-none text-secondary hover-dark">Aksesoris</a>
+            {% for cat in categories %}
+                <a href="{% url 'home' %}?category={{ cat|urlencode }}" 
+                   class="text-decoration-none {% if selected_category == cat %}text-dark fw-bold{% else %}text-secondary{% endif %}">
+                   {{ cat }}
+                </a>
+            {% endfor %}
         </div>
     </div>
 </div>

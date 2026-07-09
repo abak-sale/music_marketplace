@@ -133,7 +133,11 @@
             <p class="text-muted small mb-4">
                 <i class="fa-solid fa-location-dot me-1"></i>{{ product.location }} &bull; 
                 <i class="fa-regular fa-clock me-1"></i>{{ product.created_at|date:"d M Y" }} &bull;
-                <i class="fa-solid fa-user me-1"></i>Penjual: {{ product.seller.username }}
+                <!-- LINK PROFIL AKTIF DI SINI -->
+                <i class="fa-solid fa-user me-1"></i>Penjual: 
+                <a href="{% url 'seller_profile' product.seller.username %}" class="fw-bold text-decoration-none text-primary">
+                    {{ product.seller.username }}
+                </a>
             </p>
 
             <hr class="text-muted opacity-25">

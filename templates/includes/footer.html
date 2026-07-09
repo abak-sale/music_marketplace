@@ -1,3 +1,6 @@
+{% load custom_tags %}
+{% get_categories as categories %}
+
 <footer class="bg-dark text-white pt-5 pb-4 mt-auto border-top border-secondary">
     <div class="container">
         <div class="row">
@@ -10,9 +13,13 @@
 
             <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
                 <h6 class="text-uppercase mb-4 font-weight-bold text-warning">Jelajahi</h6>
-                <p class="small"><a href="#" class="text-white text-decoration-none text-muted-hover">Gitar & Bass</a></p>
-                <p class="small"><a href="#" class="text-white text-decoration-none text-muted-hover">Ampli & Efek</a></p>
-                <p class="small"><a href="#" class="text-white text-decoration-none text-muted-hover">Aksesoris</a></p>
+                {% for cat in categories %}
+                    <p class="small">
+                        <a href="{% url 'home' %}?category={{ cat|urlencode }}" class="text-white text-decoration-none text-muted-hover">
+                            {{ cat }}
+                        </a>
+                    </p>
+                {% endfor %}
             </div>
 
             <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
