@@ -17,17 +17,30 @@
 </style>
 
 <div class="container mt-4">
-    <h3 class="fw-bold mb-4">
-        {% if search_query %}
-            <i class="fa-solid fa-magnifying-glass text-primary me-2"></i>Hasil Pencarian: "{{ search_query }}"
-            <a href="{% url 'home' %}" class="btn btn-sm btn-outline-danger ms-2">Reset</a>
-        {% elif selected_category %}
-            <i class="fa-solid fa-filter text-success me-2"></i>Kategori: {{ selected_category }}
-            <a href="{% url 'home' %}" class="btn btn-sm btn-outline-danger ms-2">Reset</a>
-        {% else %}
-            <i class="fa-solid fa-fire text-danger me-2"></i>Produk Terbaru
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="fw-bold m-0">
+            {% if search_query %}
+                <i class="fa-solid fa-magnifying-glass text-primary me-2"></i>Hasil Pencarian: "{{ search_query }}"
+            {% elif selected_category %}
+                <i class="fa-solid fa-filter text-success me-2"></i>Kategori: {{ selected_category }}
+            {% else %}
+                <i class="fa-solid fa-fire text-danger me-2"></i>Produk Terbaru
+            {% endif %}
+        </h3>
+        {% if search_query or selected_category or selected_condition %}
+            <a href="{% url 'home' %}" class="btn btn-sm btn-outline-danger">Reset Semua</a>
         {% endif %}
-    </h3>
+    </div>
+
+    <div class="d-flex gap-2 align-items-center mb-4 pb-2 border-bottom">
+        <span class="text-muted small fw-bold">Kondisi:</span>
+        <a href="?{% if selected_category %}category={{ selected_category|urlencode }}&{% endif %}condition=baru" 
+           class="btn btn-sm {% if selected_condition == 'baru' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Baru</a>
+        <a href="?{% if selected_category %}category={{ selected_category|urlencode }}&{% endif %}condition=mulus" 
+           class="btn btn-sm {% if selected_condition == 'mulus' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Mulus</a>
+        <a href="?{% if selected_category %}category={{ selected_category|urlencode }}&{% endif %}condition=bagus" 
+           class="btn btn-sm {% if selected_condition == 'bagus' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Bagus</a>
+    </div>
     
     <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
         {% for product in products %}
@@ -56,7 +69,7 @@
         {% empty %}
             <div class="col-12 text-center py-5">
                 <i class="fa-regular fa-folder-open text-muted mb-3" style="font-size: 3rem;"></i>
-                <p class="text-muted">Produk tidak ditemukan.</p>
+                <p class="text-muted">Tidak ada produk dengan kriteria tersebut.</p>
             </div>
         {% endfor %}
     </div>
