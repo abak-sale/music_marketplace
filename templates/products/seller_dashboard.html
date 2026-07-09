@@ -1,75 +1,114 @@
 {% extends 'base.html' %}
 {% load humanize %}
 
-{% block title %}Dashboard Penjual - Toko Saya{% endblock %}
+{% block title %}Dashboard Penjual - Abak Sale{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="row mb-4 align-items-center">
-        <div class="col">
-            <h2 class="fw-bold text-dark">Dashboard Penjual</h2>
-            <p class="text-muted">Halo, <strong>{{ request.user.username }}</strong>! Kelola semua daftar dagangan alat musik Anda di sini.</p>
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <div>
+            <h1 class="fw-bold text-dark mb-1">Dashboard Penjual</h1>
+            <p class="text-muted mb-0">Halo, <strong class="text-dark">{{ request.user.username }}</strong>! Kelola semua daftar dagangan alat musik Anda di sini.</p>
         </div>
-        <div class="col-auto">
-            <a href="{% url 'product_create' %}" class="btn btn-primary fw-bold">
-                <i class="fa-solid fa-plus me-2"></i>Tambah Produk Baru
-            </a>
-        </div>
+        <a href="{% url 'product_create' %}" class="btn btn-primary fw-bold shadow-sm px-4 py-2">
+            <i class="fa-solid fa-plus me-2"></i>Tambah Produk Baru
+        </a>
     </div>
 
-    <div class="card border-0 shadow-sm rounded-3 p-4 bg-white">
-        <h4 class="fw-bold mb-3 text-dark">Daftar Barang Dagangan Saya</h4>
-        
-        {% if my_products %}
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th scope="col">Foto</th>
-                        <th scope="col">Nama Alat Musik</th>
-                        <th scope="col">Kategori</th>
-                        <th scope="col">Brand</th>
-                        <th scope="col">Harga</th>
-                        <th scope="col">Kondisi</th>
-                        <th scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for product in my_products %}
-                    <tr>
-                        <td>
-                            {% if product.image %}
-                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="rounded bg-light" style="width: 60px; height: 60px; object-fit: cover;">
-                            {% else %}
-                                <div class="bg-secondary text-white rounded d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
-                                    <i class="fa-solid fa-guitar opacity-50"></i>
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden bg-white">
+        <div class="card-body p-4">
+            <h4 class="fw-bold text-dark mb-3">Daftar Barang Dagangan Saya</h4>
+            
+            {% if my_products %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark text-white">
+                        <tr>
+                            <th scope="col" style="width: 80px;">Foto</th>
+                            <th scope="col">Nama Alat Musik</th>
+                            <th scope="col">Kategori</th>
+                            <th scope="col">Brand</th>
+                            <th scope="col">Harga</th>
+                            <th scope="col">Kondisi</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" class="text-center" style="width: 110px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in my_products %}
+                        <tr>
+                            <td>
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-thumbnail rounded" style="width: 60px; height: 60px; object-fit: cover;">
+                                {% else %}
+                                    <div class="bg-light text-muted rounded d-flex align-items-center justify-content-center border" style="width: 60px; height: 60px;">
+                                        <i class="fa-solid fa-guitar opacity-50"></i>
+                                    </div>
+                                {% endif %}
+                            </td>
+                            
+                            <td>
+                                <a href="{% url 'product_detail' product.pk %}" class="fw-bold text-decoration-none text-dark d-block">
+                                    {{ product.name }}
+                                </a>
+                                <small class="text-muted"><i class="fa-solid fa-location-dot me-1"></i>{{ product.location }}</small>
+                            </td>
+                            
+                            <td class="text-secondary small">
+                                {{ product.category.name|default:"-" }}
+                            </td>
+                            
+                            <td class="text-secondary small">
+                                {{ product.brand.name|default:"-" }}
+                            </td>
+                            
+                            <td class="text-danger fw-bold">
+                                Rp {{ product.price|floatformat:0|intcomma }}
+                            </td>
+                            
+                            <td>
+                                <span class="badge bg-info text-dark font-monospace px-2 py-1.5 small">
+                                    {{ product.get_condition_display }}
+                                </span>
+                            </td>
+                            
+                            <td>
+                                {% if product.is_sold %}
+                                    <span class="badge bg-secondary px-2 py-1.5">Terjual / Nonaktif</span>
+                                {% else %}
+                                    <span class="badge bg-success px-2 py-1.5">Aktif / Dijual</span>
+                                {% endif %}
+                            </td>
+                            
+                            <td class="text-center">
+                                <div class="d-flex gap-1 justify-content-center">
+                                    <a href="{% url 'product_update' product.pk %}" class="btn btn-warning btn-sm text-dark fw-bold shadow-sm" title="Edit Data">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                    <a href="{% url 'product_delete' product.pk %}" class="btn btn-danger btn-sm fw-bold shadow-sm" title="Hapus Barang">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
                                 </div>
-                            {% endif %}
-                        </td>
-                        <td><strong class="text-dark">{{ product.name }}</strong></td>
-                        <td>{{ product.category.name|default:"-" }}</td>
-                        <td>{{ product.brand.name|default:"-" }}</td>
-                        <td class="text-danger fw-semibold">Rp {{ product.price|floatformat:0|intcomma }}</td>
-                        <td>
-                            <span class="badge bg-info text-dark">{{ product.get_condition_display }}</span>
-                        </td>
-                        <td>
-                            {% if product.is_sold %}
-                                <span class="badge bg-secondary">Terjual</span>
-                            {% else %}
-                                <span class="badge bg-success">Aktif / Dijual</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5 bg-light rounded-3 border border-dashed mt-2">
+                <div class="text-muted mb-3">
+                    <i class="fa-solid fa-boxes-open display-1 opacity-20"></i>
+                </div>
+                <h5 class="fw-bold text-secondary">Belum Ada Dagangan</h5>
+                <p class="text-muted small mb-3">Anda belum memiliki produk alat musik yang didaftarkan untuk dijual.</p>
+                <a href="{% url 'product_create' %}" class="btn btn-primary btn-sm fw-bold">
+                    <i class="fa-solid fa-plus me-1"></i> Mulai Jual Sekarang
+                </a>
+            </div>
+            {% endif %}
+
         </div>
-        {% else %}
-        <div class="text-center py-5">
-            <p class="text-secondary fs-5">Anda belum memiliki produk alat musik yang didaftarkan untuk dijual.</p>
-        </div>
-        {% endif %}
     </div>
 </div>
 {% endblock %}

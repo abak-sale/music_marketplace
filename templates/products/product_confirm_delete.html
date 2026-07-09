@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Hapus Produk - Abak Sale{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5" style="max-width: 500px;">
+    <div class="card border-0 shadow-sm rounded-3 p-4 bg-white text-dark text-center">
+        <div class="text-danger mb-3">
+            <i class="fa-solid fa-triangle-exclamation display-3"></i>
+        </div>
+        <h3 class="fw-bold mb-2">Konfirmasi Hapus</h3>
+        <p class="text-muted mb-4">Apakah Anda yakin ingin menghapus permanent alat musik <strong class="text-dark">"{{ object.name }}"</strong>? Tindakan ini tidak dapat dibatalkan.</p>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-danger fw-bold py-2">
+                    <i class="fa-solid fa-trash-can me-2"></i>Ya, Hapus Produk Ini
+                </button>
+                <a href="{% url 'seller_dashboard' %}" class="btn btn-light fw-bold py-2 border">
+                    Batal, Kembali
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

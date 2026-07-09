@@ -1,6 +1,10 @@
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
+from django.contrib.auth import login
 from products.models import Product  # Impor model Product dari app products
+from .forms import SignUpForm
 
+# 1. VIEW BERANDA UTAMA (Milik Anda yang asli)
 class HomepageView(TemplateView):
     template_name = 'home.html'
 
@@ -13,3 +17,27 @@ class HomepageView(TemplateView):
         context['latest_products'] = Product.objects.filter(is_sold=False)[:8]
         
         return context
+
+
+# 2. VIEW PENDAFTARAN AKUN BARU (Tambahan Fitur Registrasi)
+def signup_view(request):
+    if request.user.is_authenticated:
+        return redirect('home')  # Jika sudah login, dilempar ke beranda utama
+        
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            # Mengamankan kata sandi dengan enkripsi Django
+            user.set_password(form.cleaned_data['password'])
+            # Menyimpan nomor WA ke field first_name agar terbaca otomatis oleh tombol chat WA
+            user.first_name = form.cleaned_data['whatsapp_number']
+            user.save()
+            
+            # Otomatis login setelah berhasil mendaftar
+            login(request, user)
+            return redirect('home')
+    else:
+        form = SignUpForm()
+        
+    return render(request, 'homepage/signup.html', {'form': form})

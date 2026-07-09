@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load humanize %}
-{% load custom_tags %} {% block title %}{{ product.name }} - Abak Sale Marketplace{% endblock %}
+{% load custom_tags %} 
+
+{% block title %}{{ product.name }} - Abak Sale Marketplace{% endblock %}
 
 {% block content %}
 <style>
@@ -70,7 +72,15 @@
     .arrow-right { right: 10px; }
 </style>
 
-<div class="row g-4 mt-2">
+<div class="row mt-3">
+    <div class="col">
+        <a href="/" class="btn btn-sm btn-outline-secondary fw-bold">
+            <i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Beranda
+        </a>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
     <div class="col-md-7">
         <div class="card border-0 shadow-sm rounded-3 p-3 bg-white position-relative">
             
@@ -109,30 +119,48 @@
 
     <div class="col-md-5">
         <div class="card border-0 shadow-sm rounded-3 p-4 bg-white h-100">
-            <div class="mb-3">
-                <span class="badge {% if product.condition == 'baru' %}bg-success{% else %}bg-secondary{% endif %} fs-6">
+            <div class="mb-3 d-flex gap-1 flex-wrap">
+                <span class="badge {% if product.condition == 'baru' %}bg-success{% else %}bg-dark{% endif %} fs-6 px-3 py-2">
                     {{ product.get_condition_display }}
                 </span>
+                {% if product.brand %}
+                    <span class="badge bg-secondary fs-6 px-3 py-2">{{ product.brand.name }}</span>
+                {% endif %}
             </div>
 
             <h1 class="fw-bold text-dark mb-2 fs-2">{{ product.name }}</h1>
             
             <p class="text-muted small mb-4">
                 <i class="fa-solid fa-location-dot me-1"></i>{{ product.location }} &bull; 
-                <i class="fa-regular fa-clock me-1"></i>{{ product.created_at|date:"d M Y" }}
+                <i class="fa-regular fa-clock me-1"></i>{{ product.created_at|date:"d M Y" }} &bull;
+                <i class="fa-solid fa-user me-1"></i>Penjual: {{ product.seller.username }}
             </p>
 
-            <hr class="text-muted">
+            <hr class="text-muted opacity-25">
 
             <div class="my-4">
-                <label class="text-muted small d-block">Harga Terbuka</label>
+                <label class="text-muted small d-block mb-1">Harga Terbuka</label>
                 <h2 class="text-danger fw-bold display-6">Rp {{ product.price|floatformat:0|intcomma|replace_commas }}</h2>
             </div>
 
-            <div class="d-grid gap-2 mt-4">
-                <a href="#" class="btn btn-success btn-lg py-3 fw-bold shadow-sm">
-                    <i class="fab fa-whatsapp me-2 fs-5"></i>Tanya Penjual via WhatsApp
-                </a>
+            <div class="d-grid gap-2 mt-auto">
+                {% if product.is_sold %}
+                    <button class="btn btn-secondary btn-lg py-3 fw-bold shadow-sm" disabled>
+                        <i class="fa-solid fa-ban me-2"></i> Produk Sudah Terjual
+                    </button>
+                {% else %}
+                    {% if product.seller.first_name %}
+                        <a href="https://wa.me/{{ product.seller.first_name }}?text=Halo%20{{ product.seller.username }},%20saya%20tertarik%20dengan%20alat%20musik%20*{{ product.name|urlencode }}*%20yang%20dijual%20di%20Abak%20Sale%20dengan%20harga%20*Rp%20{{ product.price|floatformat:0|intcomma|replace_commas|urlencode }}*.%20Apakah%20barangnya%20masih%20tersedia?" 
+                           target="_blank" 
+                           class="btn btn-success btn-lg py-3 fw-bold shadow-sm">
+                            <i class="fa-brands fa-whatsapp me-2 fs-5 align-middle"></i>Tanya Penjual via WhatsApp
+                        </a>
+                    {% else %}
+                        <button class="btn btn-secondary btn-lg py-3 fw-bold shadow-sm" disabled title="Penjual belum mendaftarkan nomor telepon">
+                            <i class="fa-brands fa-whatsapp me-2 fs-5 align-middle"></i>Hubungi via WA (No HP Belum Ada)
+                        </button>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>
@@ -142,7 +170,7 @@
     <div class="col-md-7">
         <div class="card border-0 shadow-sm rounded-3 p-4 bg-white">
             <h4 class="fw-bold text-dark mb-3">Deskripsi Alat Musik</h4>
-            <p class="text-secondary lh-base" style="white-space: pre-line;">{{ product.description }}</p>
+            <p class="text-secondary lh-base mb-0" style="white-space: pre-line;">{{ product.description }}</p>
         </div>
     </div>
 </div>

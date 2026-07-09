@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Daftar Akun Baru - Abak Sale{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5" style="max-width: 500px;">
+    <div class="card border-0 shadow-sm rounded-3 p-4 bg-white text-dark">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold mb-1" style="color: #f05a28;">Abak Sale</h2>
+            <p class="text-muted small">Mulai daftarkan akun Anda untuk berjualan alat musik seken</p>
+        </div>
+        
+        <form method="POST" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label small fw-bold text-secondary">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="text-danger small mt-1">{{ form.username.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label small fw-bold text-secondary">Alamat Email</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label small fw-bold text-secondary">Nomor WhatsApp Aktif</label>
+                {{ form.whatsapp_number }}
+                <div class="form-text text-muted" style="font-size: 11px;">Wajib diawali kode negara tanpa spasi/tanda +. Contoh: 628123456789</div>
+                {% if form.whatsapp_number.errors %}
+                    <div class="text-danger small mt-1">{{ form.whatsapp_number.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label small fw-bold text-secondary">Kata Sandi</label>
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <div class="text-danger small mt-1">{{ form.password.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label small fw-bold text-secondary">Konfirmasi Kata Sandi</label>
+                {{ form.password_confirm }}
+                {% if form.password_confirm.errors %}
+                    <div class="text-danger small mt-1">{{ form.password_confirm.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary fw-bold py-2">
+                    <i class="fa-solid fa-user-plus me-2"></i>Daftar Sekarang
+                </button>
+            </div>
+            
+            <div class="text-center mt-3 small">
+                <span class="text-muted">Sudah punya akun?</span> 
+                <a href="/accounts/login/" class="text-decoration-none fw-bold" style="color: #f05a28;">Masuk di sini</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
