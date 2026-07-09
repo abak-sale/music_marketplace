@@ -11,7 +11,7 @@
             <p class="text-muted">Halo, <strong>{{ request.user.username }}</strong>! Kelola semua daftar dagangan alat musik Anda di sini.</p>
         </div>
         <div class="col-auto">
-            <a href="#" class="btn btn-primary fw-bold">
+            <a href="{% url 'product_create' %}" class="btn btn-primary fw-bold">
                 <i class="fa-solid fa-plus me-2"></i>Tambah Produk Baru
             </a>
         </div>

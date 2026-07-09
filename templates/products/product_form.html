@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Tambah Alat Musik Baru - Abak Sale{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5" style="max-width: 750px;">
+    <div class="card border-0 shadow-sm rounded-3 p-4 bg-white text-dark">
+        <h2 class="fw-bold mb-1">Jual Alat Musik Baru</h2>
+        <p class="text-muted mb-4">Masukkan detail spesifikasi alat musik Anda dengan lengkap.</p>
+        
+        <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="alert alert-danger p-2 small">
+                    Mohon periksa kembali isian formulir Anda.
+                </div>
+            {% endif %}
+
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label fw-bold text-secondary small mb-1">Nama Alat Musik</label>
+                    {{ form.name }}
+                </div>
+                
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-secondary small mb-1">Kategori</label>
+                    {{ form.category }}
+                </div>
+                
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-secondary small mb-1">Brand / Merek</label>
+                    {{ form.brand }}
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-secondary small mb-1">Harga Jual (Rp)</label>
+                    {{ form.price }}
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-secondary small mb-1">Kondisi Barang</label>
+                    {{ form.condition }}
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label fw-bold text-secondary small mb-1">Lokasi Pengiriman / COD</label>
+                    {{ form.location }}
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label fw-bold text-secondary small mb-1">Foto Utama (Cover)</label>
+                    {{ form.image }}
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label fw-bold text-secondary small mb-1">Deskripsi Produk</label>
+                    {{ form.description }}
+                </div>
+            </div>
+
+            <div class="mt-4 pt-2 d-flex gap-2">
+                <button type="submit" class="btn btn-success fw-bold px-4">
+                    <i class="fa-solid fa-cloud-arrow-up me-2"></i>Tayangkan Produk
+                </button>
+                <a href="{% url 'seller_dashboard' %}" class="btn btn-outline-secondary fw-bold px-4">
+                    Batal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
