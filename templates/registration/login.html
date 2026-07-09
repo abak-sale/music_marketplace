@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Masuk Akun - Abak Sale{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5" style="max-width: 450px;">
+    <div class="card border-0 shadow-sm rounded-3 p-4 bg-white text-dark">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold mb-1" style="color: #f05a28;">Abak Sale</h2>
+            <p class="text-muted small">Masuk ke akun Anda untuk mengelola dagangan alat musik</p>
+        </div>
+
+        {% if form.errors %}
+            <div class="alert alert-danger border-0 small text-start py-2 mb-3" role="alert">
+                <i class="fa-solid fa-circle-exclamation me-1"></i> Username atau kata sandi salah. Silakan coba lagi!
+            </div>
+        {% endif %}
+        
+        <form method="POST" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="id_username" class="form-label small fw-bold text-secondary">Username</label>
+                <input type="text" name="username" autofocus required id="id_username" class="form-control" placeholder="Masukkan username Anda">
+            </div>
+
+            <div class="mb-4">
+                <label for="id_password" class="form-label small fw-bold text-secondary">Kata Sandi</label>
+                <input type="password" name="password" required id="id_password" class="form-control" placeholder="Masukkan kata sandi">
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary fw-bold py-2" style="background-color: #f05a28; border-color: #f05a28;">
+                    <i class="fa-solid fa-right-to-bracket me-2"></i>Masuk Sekarang
+                </button>
+            </div>
+            
+            <div class="text-center mt-3 small">
+                <span class="text-muted">Belum punya akun?</span> 
+                <a href="{% url 'signup' %}" class="text-decoration-none fw-bold" style="color: #f05a28;">Daftar di sini</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -5,6 +5,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
+    # Menambahkan sistem login & logout bawaan Django di sini
+    path('accounts/', include('django.contrib.auth.urls')),
+    
     path('', include('homepage.urls')),
     path('products/', include('products.urls')),
 ]

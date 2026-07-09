@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
-from django.core.exceptions import PermissionDenied
 from .models import Product
 from .forms import ProductForm
 
@@ -35,30 +34,28 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-# 4. VIEW UBAH PRODUK (STEP 17)
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+# 4. VIEW UBAH PRODUK - Menggunakan UserPassesTestMixin
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
     form_class = ProductForm
-    template_name = 'products/product_form.html'  # Memakai template yang sama dengan Create agar hemat file
+    template_name = 'products/product_form.html'  
     success_url = reverse_lazy('seller_dashboard')
 
-    def get_object(self, queryset=None):
-        obj = super().get_object(queryset)
-        # Sistem Keamanan: Memastikan orang lain tidak bisa mengedit produk milik Anda lewat URL
-        if obj.seller != self.request.user:
-            raise PermissionDenied("Anda tidak memiliki hak untuk mengubah produk ini.")
-        return obj
+    def test_func(self):
+        # Mengambil data objek produk yang diakses
+        product = self.get_object()
+        # Mengizinkan akses hanya jika penjualnya adalah user yang sedang login
+        return self.request.user == product.seller
 
 
-# 5. VIEW HAPUS PRODUK (STEP 17)
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+# 5. VIEW HAPUS PRODUK - Menggunakan UserPassesTestMixin
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Product
     template_name = 'products/product_confirm_delete.html'
     success_url = reverse_lazy('seller_dashboard')
 
-    def get_object(self, queryset=None):
-        obj = super().get_object(queryset)
-        # Sistem Keamanan: Memastikan orang lain tidak bisa menghapus produk milik Anda
-        if obj.seller != self.request.user:
-            raise PermissionDenied("Anda tidak memiliki hak untuk menghapus produk ini.")
-        return obj
+    def test_func(self):
+        # Mengambil data objek produk yang diakses
+        product = self.get_object()
+        # Mengizinkan akses hanya jika penjualnya adalah user yang sedang login
+        return self.request.user == product.seller

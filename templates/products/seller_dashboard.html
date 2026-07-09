@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load humanize %}
+<!-- TAMBAHKAN PEMANGGILAN TAG CUSTOM DI SINI -->
+{% load custom_tags %}
 
 {% block title %}Dashboard Penjual - Abak Sale{% endblock %}
 
@@ -63,7 +65,8 @@
                             </td>
                             
                             <td class="text-danger fw-bold">
-                                Rp {{ product.price|floatformat:0|intcomma }}
+                                <!-- SESUAIKAN BAGIAN INI AGAR MENGGUNAKAN TITIK PEMISAH RIBUAN -->
+                                Rp {{ product.price|floatformat:0|intcomma|replace_commas }}
                             </td>
                             
                             <td>
