@@ -5,9 +5,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-key-substitusi-anda'
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "abaksale.pythonanywhere.com",
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -94,3 +96,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Pengaturan pengalihan halaman setelah login dan logout
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
