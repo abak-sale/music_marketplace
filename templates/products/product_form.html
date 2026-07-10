@@ -54,11 +54,26 @@
                 </div>
 
                 <div class="col-12">
+                    <label class="form-label fw-bold text-secondary small mb-1">
+                        {{ form.extra_images.label }}
+                    </label>
+                    {{ form.extra_images }}
+                    <div class="form-text text-muted small mt-1">
+                        Bisa pilih beberapa foto sekaligus (Ctrl+klik atau Cmd+klik). Maksimal 10 foto.
+                    </div>
+                    {% if form.extra_images.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.extra_images.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-12">
                     <label class="form-label fw-bold text-secondary small mb-1">Deskripsi Produk</label>
                     {{ form.description }}
                 </div>
-            </div>
 
+                
             <div class="mt-4 pt-2 d-flex gap-2">
                 <button type="submit" class="btn btn-success fw-bold px-4">
                     <i class="fa-solid fa-cloud-arrow-up me-2"></i>Tayangkan Produk

@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from .utils import optimize_image
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="Nama Kategori")
@@ -44,7 +46,6 @@ class Product(models.Model):
         ('butuh_perbaikan', 'Butuh Perbaikan (Fair/Broken)'),
     ]
 
-    # KITA TAMBAHKAN RELASI PENJUAL (USER) DI SINI
     seller = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -52,18 +53,18 @@ class Product(models.Model):
         verbose_name="Penjual"
     )
     category = models.ForeignKey(
-        Category, 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True, 
+        Category,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
         related_name='products',
         verbose_name="Kategori"
     )
     brand = models.ForeignKey(
-        Brand, 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True, 
+        Brand,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
         related_name='products',
         verbose_name="Brand"
     )
@@ -85,6 +86,30 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        # Cek apakah foto cover BARU saja diganti — supaya kita
+        # tidak mengoptimasi ulang foto yang sudah pernah dioptimasi
+        # sebelumnya (kalau dipaksa jalan setiap save, kualitas
+        # gambar akan terus menurun tiap kali produk diedit,
+        # meskipun fotonya tidak diganti sama sekali).
+        is_new_image = False
+        if self.pk:
+            old = Product.objects.filter(pk=self.pk).first()
+            if old and old.image != self.image:
+                is_new_image = True
+        else:
+            is_new_image = bool(self.image)
+
+        super().save(*args, **kwargs)
+
+        if is_new_image and self.image:
+            optimize_image(self.image)
+
+    def get_image_url(self):
+        if self.image:
+            return self.image.url
+        return ""
+
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images', verbose_name="Produk")
@@ -97,3 +122,8 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Foto tambahan untuk {self.product.name}"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.image:
+            optimize_image(self.image)

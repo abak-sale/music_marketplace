@@ -3,11 +3,11 @@ from django.views.generic import TemplateView
 from django.contrib.auth import login
 from products.models import Product  # Impor model Product dari app products
 from .forms import SignUpForm
-
+from products.views import HomeView
 # 1. VIEW BERANDA UTAMA (Milik Anda yang asli)
-class HomepageView(TemplateView):
-    template_name = 'home.html'
-
+class HomepageView(HomeView):
+    pass
+    
     def get_context_data(self, **kwargs):
         # Mengambil context bawaan dari TemplateView
         context = super().get_context_data(**kwargs)
