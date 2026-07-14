@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load humanize %}
-{% load custom_tags %} 
+{% load custom_tags %}
 
 {% block title %}{{ product.name }} - Abak Sale Marketplace{% endblock %}
 
@@ -44,7 +44,7 @@
         transition: 0.2s;
     }
     .thumbnail-img.active, .thumbnail-img:hover {
-        border-color: #f05a28; 
+        border-color: #f05a28;
     }
     .nav-arrow {
         position: absolute;
@@ -83,7 +83,7 @@
 <div class="row g-4 mt-1">
     <div class="col-md-7">
         <div class="card border-0 shadow-sm rounded-3 p-3 bg-white position-relative">
-            
+
             <div class="nav-arrow arrow-left" id="prevBtn">
                 <i class="fa-solid fa-chevron-left"></i>
             </div>
@@ -109,7 +109,7 @@
                 {% if product.image %}
                     <img src="{{ product.image.url }}" class="thumbnail-img rounded bg-light active" onclick="changeImage(this.src, 0)">
                 {% endif %}
-                
+
                 {% for extra in product.images.all %}
                     <img src="{{ extra.image.url }}" class="thumbnail-img rounded bg-light" onclick="changeImage(this.src, {{ forloop.counter }})">
                 {% endfor %}
@@ -129,12 +129,12 @@
             </div>
 
             <h1 class="fw-bold text-dark mb-2 fs-2">{{ product.name }}</h1>
-            
+
             <p class="text-muted small mb-4">
-                <i class="fa-solid fa-location-dot me-1"></i>{{ product.location }} &bull; 
+                <i class="fa-solid fa-location-dot me-1"></i>{{ product.location }} &bull;
                 <i class="fa-regular fa-clock me-1"></i>{{ product.created_at|date:"d M Y" }} &bull;
                 <!-- LINK PROFIL AKTIF DI SINI -->
-                <i class="fa-solid fa-user me-1"></i>Penjual: 
+                <i class="fa-solid fa-user me-1"></i>Penjual:
                 <a href="{% url 'seller_profile' product.seller.username %}" class="fw-bold text-decoration-none text-primary">
                     {{ product.seller.username }}
                 </a>
@@ -154,8 +154,8 @@
                     </button>
                 {% else %}
                     {% if product.seller.first_name %}
-                        <a href="https://wa.me/{{ product.seller.first_name }}?text=Halo%20{{ product.seller.username }},%20saya%20tertarik%20dengan%20alat%20musik%20*{{ product.name|urlencode }}*%20yang%20dijual%20di%20Abak%20Sale%20dengan%20harga%20*Rp%20{{ product.price|floatformat:0|intcomma|replace_commas|urlencode }}*.%20Apakah%20barangnya%20masih%20tersedia?" 
-                           target="_blank" 
+                        <a href="https://wa.me/{{ product.seller.first_name }}?text=Halo%20{{ product.seller.username }},%20saya%20tertarik%20dengan%20alat%20musik%20*{{ product.name|urlencode }}*%20yang%20dijual%20di%20Abak%20Sale%20dengan%20harga%20*Rp%20{{ product.price|floatformat:0|intcomma|replace_commas|urlencode }}*.%20Apakah%20barangnya%20masih%20tersedia%3F%0A%0ALink%20Produk%3A%20{{ request.build_absolute_uri|urlencode }}"
+                           target="_blank"
                            class="btn btn-success btn-lg py-3 fw-bold shadow-sm">
                             <i class="fa-brands fa-whatsapp me-2 fs-5 align-middle"></i>Tanya Penjual via WhatsApp
                         </a>
@@ -216,10 +216,10 @@
             const rect = zoomWrapper.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            
+
             const xPercent = (x / rect.width) * 100;
             const yPercent = (y / rect.height) * 100;
-            
+
             mainImg.style.transformOrigin = `${xPercent}% ${yPercent}%`;
             mainImg.style.transform = 'scale(2)';
         });
