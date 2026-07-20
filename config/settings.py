@@ -7,9 +7,8 @@ SECRET_KEY = 'django-insecure-key-substitusi-anda'
 
 DEBUG = False
 
-ALLOWED_HOSTS = [
-    "abaksale.pythonanywhere.com",
-]
+# Menggabungkan host untuk server online dan development lokal
+ALLOWED_HOSTS = ['abaksale.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',  # Mengaktifkan fitur format ribuan angka uang
+    'inventaris',
 
     # App Lokal
     'homepage.apps.HomepageConfig',
@@ -85,8 +85,9 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -96,4 +97,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Pengaturan pengalihan halaman setelah login dan logout
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

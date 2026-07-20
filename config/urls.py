@@ -11,6 +11,7 @@ urlpatterns = [
     
     path('', include('homepage.urls')),
     path('products/', include('products.urls')),
+    path('inventaris/', include('inventaris.urls')),
 ]
 
 if settings.DEBUG:

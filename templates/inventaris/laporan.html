@@ -1,0 +1,106 @@
+{% extends 'inventaris/base.html' %}
+{% load humanize %}
+{% block content %}
+<h2 class="mb-4">Laporan Keuangan & Inventaris</h2>
+
+<!-- Filter Bulan & Tahun -->
+<form method="GET" class="row g-3 mb-4 bg-white p-3 rounded shadow-sm">
+    <div class="col-md-4">
+        <label class="form-label">Bulan</label>
+        <select name="bulan" class="form-control">
+            {% for b in list_bulan %}
+                <option value="{{ b }}" {% if b == bulan %}selected{% endif %}>Bulan {{ b }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">Tahun</label>
+        <input type="number" name="tahun" class="form-control" value="{{ tahun }}">
+    </div>
+    <div class="col-md-4 d-flex align-items-end">
+        <button type="submit" class="btn btn-dark w-100">Filter Laporan</button>
+    </div>
+</form>
+
+<!-- Ringkasan Kartu Laporan -->
+<div class="row text-white mb-4">
+    <div class="col-md-4">
+        <div class="card bg-secondary p-3">
+            <h6>Grand Total Modal Aktif (Stok)</h6>
+            <h4>Rp {{ grand_total_modal_aktif|floatformat:0|intcomma }}</h4>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success p-3">
+            <h6>Total Omset (Bulan Ini)</h6>
+            <h4>Rp {{ total_omset|floatformat:0|intcomma }}</h4>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-info text-dark p-3">
+            <h6>Total Laba (Bulan Ini)</h6>
+            <h4>Rp {{ total_laba|floatformat:0|intcomma }}</h4>
+        </div>
+    </div>
+</div>
+
+<!-- Tabel 1: Gitar Masuk -->
+<h4 class="mb-3">Daftar Gitar MASUK (Bulan {{ bulan }}/{{ tahun }})</h4>
+<div class="table-responsive bg-white p-3 rounded shadow-sm mb-5">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tanggal Masuk</th>
+                <th>Brand / Model</th>
+                <th>Nama Gitar</th>
+                <th>Total Modal</th>
+                <th>Harga Jual</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for g in gitar_masuk %}
+            <tr>
+                <td>{{ g.tanggal_masuk }}</td>
+                <td>{{ g.brand_model }}</td>
+                <td>{{ g.nama_gitar }}</td>
+                <td>Rp {{ g.total_modal|floatformat:0|intcomma }}</td>
+                <td>Rp {{ g.harga_jual|floatformat:0|intcomma }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="text-center text-muted">Tidak ada data gitar masuk di periode ini.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Tabel 2: Gitar Terjual -->
+<h4 class="mb-3">Daftar Gitar TERJUAL (Bulan {{ bulan }}/{{ tahun }})</h4>
+<div class="table-responsive bg-white p-3 rounded shadow-sm">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tanggal Terjual</th>
+                <th>Brand / Model</th>
+                <th>Nama Gitar</th>
+                <th>Total Modal</th>
+                <th>Harga Jual</th>
+                <th>Laba / Untung</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for g in gitar_terjual %}
+            <tr>
+                <td>{{ g.tanggal_terjual }}</td>
+                <td>{{ g.brand_model }}</td>
+                <td>{{ g.nama_gitar }}</td>
+                <td>Rp {{ g.total_modal|floatformat:0|intcomma }}</td>
+                <td>Rp {{ g.harga_jual|floatformat:0|intcomma }}</td>
+                <td class="fw-bold text-success">Rp {{ g.laba|floatformat:0|intcomma }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-center text-muted">Tidak ada gitar terjual di periode ini.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
