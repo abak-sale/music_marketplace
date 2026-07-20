@@ -24,20 +24,30 @@
 
 <!-- Ringkasan Kartu Laporan -->
 <div class="row text-white mb-4">
-    <div class="col-md-4">
-        <div class="card bg-secondary p-3">
+    <!-- Kartu 1: Grand Total Modal Aktif (Stok) -->
+    <div class="col-md-3 mb-3">
+        <div class="card bg-secondary p-3 h-100">
             <h6>Grand Total Modal Aktif (Stok)</h6>
             <h4>Rp {{ grand_total_modal_aktif|floatformat:0|intcomma }}</h4>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card bg-success p-3">
+    <!-- Kartu 2: Total Omset (Bulan Ini) -->
+    <div class="col-md-3 mb-3">
+        <div class="card bg-success p-3 h-100">
             <h6>Total Omset (Bulan Ini)</h6>
             <h4>Rp {{ total_omset|floatformat:0|intcomma }}</h4>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card bg-info text-dark p-3">
+    <!-- Kartu 3: Total Modal Terjual / HPP (Bulan Ini) -->
+    <div class="col-md-3 mb-3">
+        <div class="card bg-warning text-dark p-3 h-100">
+            <h6>Modal Bulan Ini</h6>
+            <h4>Rp {{ total_modal_terjual|floatformat:0|intcomma }}</h4>
+        </div>
+    </div>
+    <!-- Kartu 4: Total Laba (Bulan Ini) -->
+    <div class="col-md-3 mb-3">
+        <div class="card bg-info text-dark p-3 h-100">
             <h6>Total Laba (Bulan Ini)</h6>
             <h4>Rp {{ total_laba|floatformat:0|intcomma }}</h4>
         </div>

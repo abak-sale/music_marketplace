@@ -3,20 +3,30 @@
 {% block content %}
 <h2 class="mb-4">Dashboard Toko</h2>
 <div class="row text-white">
-    <div class="col-md-4 mb-3">
-        <div class="card bg-primary p-3 shadow">
+    <!-- Kartu 1: Total Modal Aktif (Stok) -->
+    <div class="col-md-3 mb-3">
+        <div class="card bg-primary p-3 shadow h-100">
             <h5>Total Modal Aktif (Stok)</h5>
             <h3>Rp {{ total_modal_aktif|floatformat:0|intcomma }}</h3>
         </div>
     </div>
-    <div class="col-md-4 mb-3">
-        <div class="card bg-success p-3 shadow">
+    <!-- Kartu 2: Omset Bulan Ini -->
+    <div class="col-md-3 mb-3">
+        <div class="card bg-success p-3 shadow h-100">
             <h5>Omset Bulan Ini</h5>
             <h3>Rp {{ omset_bulan_ini|floatformat:0|intcomma }}</h3>
         </div>
     </div>
-    <div class="col-md-4 mb-3">
-        <div class="card bg-warning text-dark p-3 shadow">
+    <!-- Kartu 3: Total Modal Terjual (Bulan Ini) -->
+    <div class="col-md-3 mb-3">
+        <div class="card bg-secondary text-white p-3 shadow h-100">
+            <h5>Modal Bulan ini</h5>
+            <h3>Rp {{ total_modal_terjual|floatformat:0|intcomma }}</h3>
+        </div>
+    </div>
+    <!-- Kartu 4: Laba Bersih Bulan Ini -->
+    <div class="col-md-3 mb-3">
+        <div class="card bg-warning text-dark p-3 shadow h-100">
             <h5>Laba Bersih Bulan Ini</h5>
             <h3>Rp {{ laba_bulan_ini|floatformat:0|intcomma }}</h3>
         </div>
