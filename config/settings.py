@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',  # Mengaktifkan fitur format ribuan angka uang
+    'inventaris',
 
     # App Lokal
     'homepage.apps.HomepageConfig',

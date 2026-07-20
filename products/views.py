@@ -15,6 +15,7 @@ class HomeView(ListView):
     model = Product
     template_name = 'home.html'
     context_object_name = 'products'
+    paginate_by = 12
 
     def get_queryset(self):
         query = self.request.GET.get('q', '')

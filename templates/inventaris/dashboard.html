@@ -1,0 +1,25 @@
+{% extends 'inventaris/base.html' %}
+{% load humanize %}
+{% block content %}
+<h2 class="mb-4">Dashboard Toko</h2>
+<div class="row text-white">
+    <div class="col-md-4 mb-3">
+        <div class="card bg-primary p-3 shadow">
+            <h5>Total Modal Aktif (Stok)</h5>
+            <h3>Rp {{ total_modal_aktif|floatformat:0|intcomma }}</h3>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card bg-success p-3 shadow">
+            <h5>Omset Bulan Ini</h5>
+            <h3>Rp {{ omset_bulan_ini|floatformat:0|intcomma }}</h3>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card bg-warning text-dark p-3 shadow">
+            <h5>Laba Bersih Bulan Ini</h5>
+            <h3>Rp {{ laba_bulan_ini|floatformat:0|intcomma }}</h3>
+        </div>
+    </div>
+</div>
+{% endblock %}

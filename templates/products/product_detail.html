@@ -154,7 +154,7 @@
                     </button>
                 {% else %}
                     {% if product.seller.first_name %}
-                        <a href="https://wa.me/{{ product.seller.first_name }}?text=Halo%20{{ product.seller.username }},%20saya%20tertarik%20dengan%20alat%20musik%20*{{ product.name|urlencode }}*%20yang%20dijual%20di%20Abak%20Sale%20dengan%20harga%20*Rp%20{{ product.price|floatformat:0|intcomma|replace_commas|urlencode }}*.%20Apakah%20barangnya%20masih%20tersedia?" 
+                        <a href="https://wa.me/{{ product.seller.first_name }}?text=Halo%20{{ product.seller.username }},%20saya%20tertarik%20dengan%20alat%20musik%20*{{ product.name|urlencode }}*%20yang%20dijual%20di%20Abak%20Sale%20dengan%20harga%20*Rp%20{{ product.price|floatformat:0|intcomma|replace_commas|urlencode }}*.%20Apakah%20barangnya%20masih%20tersedia%3F%0A%0ALink%20Produk%3A%20{{ request.build_absolute_uri|urlencode }}" 
                            target="_blank" 
                            class="btn btn-success btn-lg py-3 fw-bold shadow-sm">
                             <i class="fa-brands fa-whatsapp me-2 fs-5 align-middle"></i>Tanya Penjual via WhatsApp
