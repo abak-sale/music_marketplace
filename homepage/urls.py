@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import HomepageView, signup_view, verify_email_view
+from .views import HomepageView, signup_view, verify_email_view, delete_account_view
 
 urlpatterns = [
     # Rute Beranda Utama
@@ -10,4 +10,6 @@ urlpatterns = [
 
     # Rute Verifikasi Email
     path('verify-email/<uidb64>/<token>/', verify_email_view, name='verify_email'),
+
+    path('delete-account/', delete_account_view, name='delete_account'),
 ]

@@ -59,3 +59,12 @@ class SignUpForm(forms.ModelForm):
         if password and password_confirm and password != password_confirm:
             self.add_error('password_confirm', "Kata sandi yang Anda masukkan tidak cocok!")
         return cleaned_data
+
+class DeleteAccountForm(forms.Form):
+    password = forms.CharField(
+        label="Masukkan Password untuk Konfirmasi",
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Password akun kamu'
+        })
+    )

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Hapus Akun - Abak Sale{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5" style="max-width: 450px;">
+    <div class="card border-0 shadow-sm rounded-3 p-4 bg-white">
+
+        <div class="text-center mb-3">
+            <i class="fa-solid fa-triangle-exclamation text-danger" style="font-size: 42px;"></i>
+        </div>
+
+        <h4 class="fw-bold text-center text-danger mb-3">Hapus Akun Secara Permanen</h4>
+
+        <div class="alert alert-danger small">
+            <strong>Peringatan!</strong> Tindakan ini TIDAK BISA dibatalkan.
+            {% if jumlah_produk > 0 %}
+                <br><br>
+                Kamu memiliki <strong>{{ jumlah_produk }} produk</strong> yang sedang dijual.
+                Semua produk itu akan <strong>ikut terhapus permanen</strong> bersama akun kamu.
+            {% endif %}
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label small fw-bold text-secondary">{{ form.password.label }}</label>
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <div class="text-danger small mt-1">{{ form.password.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-danger w-100 fw-bold"
+                    onclick="return confirm('Apakah kamu BENAR-BENAR yakin? Tindakan ini permanen!');">
+                Ya, Hapus Akun Saya Permanen
+            </button>
+            <a href="{% url 'seller_dashboard' %}" class="btn btn-outline-secondary w-100 fw-bold mt-2">
+                Batal, Kembali ke Dashboard
+            </a>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

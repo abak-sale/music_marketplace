@@ -1,16 +1,18 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-from django.contrib.auth import login
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.decorators import login_required
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.urls import reverse
+from django.contrib import messages
 from products.models import Product
-from .forms import SignUpForm
+from .forms import SignUpForm, DeleteAccountForm
 from products.views import HomeView
 
 
@@ -84,3 +86,41 @@ def verify_email_view(request, uidb64, token):
         return render(request, 'homepage/verify_email_success.html')
     else:
         return render(request, 'homepage/verify_email_invalid.html')
+
+
+# 5. VIEW HAPUS AKUN
+@login_required
+def delete_account_view(request):
+    # ✅ PROTEKSI BARU — Superuser TIDAK BOLEH hapus diri sendiri
+    # lewat fitur self-service ini!
+    if request.user.is_superuser:
+        messages.error(
+            request,
+            "Akun Superuser/Admin tidak bisa dihapus lewat fitur ini. "
+            "Hapus melalui Django Admin secara manual jika benar-benar diperlukan."
+        )
+        return redirect('seller_dashboard')
+
+    if request.method == 'POST':
+        form = DeleteAccountForm(request.POST)
+        if form.is_valid():
+            password = form.cleaned_data['password']
+            user = authenticate(username=request.user.username, password=password)
+
+            if user is not None:
+                username = user.username
+                logout(request)
+                user.delete()
+                messages.success(request, f"Akun '{username}' dan semua produknya berhasil dihapus.")
+                return redirect('home')
+            else:
+                form.add_error('password', 'Password salah! Akun TIDAK dihapus.')
+    else:
+        form = DeleteAccountForm()
+
+    jumlah_produk = request.user.products.count()
+
+    return render(request, 'homepage/delete_account.html', {
+        'form': form,
+        'jumlah_produk': jumlah_produk
+    })

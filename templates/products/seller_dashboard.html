@@ -13,7 +13,7 @@
             <p class="text-muted mb-0">Halo, <strong class="text-dark">{{ request.user.username }}</strong>! Kelola semua daftar dagangan alat musik Anda di sini.</p>
         </div>
         <div class="d-flex gap-2">
-            
+
             <a href="{% url 'product_create' %}" class="btn btn-primary fw-bold shadow-sm px-4 py-2">
                 <i class="fa-solid fa-plus me-2"></i>Tambah Produk Baru
             </a>
@@ -36,7 +36,7 @@
     <div class="card border-0 shadow-sm rounded-3 overflow-hidden bg-white">
         <div class="card-body p-4">
             <h4 class="fw-bold text-dark mb-3">Daftar Barang Dagangan Saya</h4>
-            
+
             {% if my_products %}
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
@@ -64,32 +64,32 @@
                                     </div>
                                 {% endif %}
                             </td>
-                            
+
                             <td>
                                 <a href="{% url 'product_detail' product.pk %}" class="fw-bold text-decoration-none text-dark d-block">
                                     {{ product.name }}
                                 </a>
                                 <small class="text-muted"><i class="fa-solid fa-location-dot me-1"></i>{{ product.location }}</small>
                             </td>
-                            
+
                             <td class="text-secondary small">
                                 {{ product.category.name|default:"-" }}
                             </td>
-                            
+
                             <td class="text-secondary small">
                                 {{ product.brand.name|default:"-" }}
                             </td>
-                            
+
                             <td class="text-danger fw-bold">
                                 Rp {{ product.price|floatformat:0|intcomma|replace_commas }}
                             </td>
-                            
+
                             <td>
                                 <span class="badge bg-info text-dark font-monospace px-2 py-1.5 small">
                                     {{ product.get_condition_display }}
                                 </span>
                             </td>
-                            
+
                             <td>
                                 {% if product.is_sold %}
                                     <span class="badge bg-secondary px-2 py-1.5">Terjual / Nonaktif</span>
@@ -97,7 +97,7 @@
                                     <span class="badge bg-success px-2 py-1.5">Aktif / Dijual</span>
                                 {% endif %}
                             </td>
-                            
+
                             <td class="text-center">
                                 <div class="d-flex gap-1 justify-content-center">
                                     <a href="{% url 'product_update' product.pk %}" class="btn btn-warning btn-sm text-dark fw-bold shadow-sm" title="Edit Data">
@@ -128,5 +128,21 @@
 
         </div>
     </div>
+
+    <!-- PENGATURAN AKUN — SELALU TAMPIL, TERLEPAS ADA PRODUK ATAU TIDAK -->
+    <div class="card border-0 shadow-sm rounded-3 bg-white mt-4">
+        <div class="card-body p-4">
+            <h6 class="fw-bold text-secondary mb-2">
+                <i class="fa-solid fa-gear me-2"></i>Pengaturan Akun
+            </h6>
+            <p class="text-muted small mb-3">
+                Tindakan di bawah ini bersifat permanen dan tidak dapat dibatalkan.
+            </p>
+            <a href="{% url 'delete_account' %}" class="btn btn-outline-danger btn-sm fw-bold">
+                <i class="fa-solid fa-trash-can me-1"></i>Hapus Akun Saya
+            </a>
+        </div>
+    </div>
+
 </div>
 {% endblock %}
