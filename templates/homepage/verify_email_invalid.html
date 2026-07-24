@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Link Tidak Valid - Abak Sale{% endblock %}
+{% block content %}
+<div class="container mt-5 mb-5" style="max-width: 450px;">
+    <div class="card border-0 shadow-sm rounded-3 p-4 bg-white text-center">
+        <i class="fa-solid fa-triangle-exclamation text-warning" style="font-size: 48px;"></i>
+        <h3 class="fw-bold mt-3 mb-2">Link Tidak Valid</h3>
+        <p class="text-muted small mb-4">Link verifikasi sudah kadaluarsa atau tidak valid.</p>
+        <a href="{% url 'login' %}" class="btn btn-outline-primary w-100 fw-bold">
+            Kembali ke Login
+        </a>
+    </div>
+</div>
+{% endblock %}

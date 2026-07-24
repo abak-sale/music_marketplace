@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Cek Email Kamu - Abak Sale{% endblock %}
+{% block content %}
+<div class="container mt-5 mb-5" style="max-width: 450px;">
+    <div class="card border-0 shadow-sm rounded-3 p-4 bg-white text-center">
+        <i class="fa-solid fa-envelope-circle-check text-success" style="font-size: 48px;"></i>
+        <h3 class="fw-bold mt-3 mb-2">Cek Email Kamu!</h3>
+        <p class="text-muted small mb-0">
+            Kami sudah kirim link verifikasi ke <strong>{{ email }}</strong>.
+            Klik link itu untuk mengaktifkan akun kamu.
+        </p>
+        <a href="{% url 'login' %}" class="btn btn-outline-primary w-100 fw-bold mt-4">
+            Kembali ke Login
+        </a>
+    </div>
+</div>
+{% endblock %}
