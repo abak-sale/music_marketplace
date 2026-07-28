@@ -27,6 +27,7 @@
         height: auto;
         max-height: 500px;
         object-fit: contain;
+        background-color: #f7f7f7;
     }
     .zoom-icon {
         position: absolute;
@@ -41,7 +42,8 @@
     }
     .thumbnail-img {
         width: 68px; height: 68px;
-        object-fit: cover;
+        object-fit: contain; /* Diubah dari cover ke contain agar thumbnail tidak terpotong */
+        background-color: #f7f7f7; /* Menambahkan background agar sisa ruang kosong terlihat rapi */
         cursor: pointer;
         border-radius: 8px;
         border: 2px solid transparent;
