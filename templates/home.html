@@ -6,42 +6,138 @@
 
 {% block content %}
 <style>
-    .reverb-card { border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden; background: #fff; transition: transform 0.2s, box-shadow 0.2s; position: relative; height: 100%; }
-    .reverb-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-    .img-container { position: relative; width: 100%; padding-top: 75%; background-color: #f9f9f9; }
-    .img-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-    .reverb-price-tag { position: absolute; bottom: 10px; left: 10px; background: rgba(255, 255, 255, 0.95); color: #111; font-weight: 800; padding: 4px 10px; border-radius: 6px; font-size: 1.1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.1); z-index: 2; }
-    .wishlist-icon { position: absolute; top: 10px; right: 10px; background: #fff; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); color: #777; cursor: pointer; z-index: 2; }
-    .wishlist-icon:hover { color: #dc3545; }
-    .product-title { font-size: 0.95rem; font-weight: 600; color: #333; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.6rem; }
+    :root {
+        --accent: #f05a28;
+        --accent-soft: #fdece3;
+        --ink: #1a1a1a;
+        --muted: #767676;
+        --line: #ececec;
+    }
+
+    .reverb-card {
+        border: none;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fff;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
+        height: 100%;
+    }
+    .reverb-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+    }
+
+    .img-container {
+        position: relative;
+        width: 100%;
+        padding-top: 75%;
+        background-color: #f7f7f7;
+        border-radius: 14px 14px 0 0;
+        overflow: hidden;
+    }
+    .img-container img {
+        position: absolute; top: 0; left: 0;
+        width: 100%; height: 100%;
+        object-fit: cover;
+    }
+
+    .reverb-price-tag {
+        position: absolute;
+        bottom: 10px; left: 10px;
+        background: rgba(255,255,255,0.96);
+        color: var(--ink);
+        font-weight: 700;
+        padding: 5px 12px;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        z-index: 2;
+    }
+
+    .wishlist-icon {
+        position: absolute;
+        top: 10px; right: 10px;
+        background: rgba(255,255,255,0.9);
+        border-radius: 50%;
+        width: 32px; height: 32px;
+        display: flex; align-items: center; justify-content: center;
+        color: var(--muted);
+        cursor: pointer;
+        z-index: 2;
+        transition: color 0.15s ease;
+    }
+    .wishlist-icon:hover { color: var(--accent); }
+
+    .product-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--ink);
+        line-height: 1.35;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        height: 2.6rem;
+    }
+
+    .badge-condition {
+        font-size: 10.5px;
+        font-weight: 700;
+        padding: 4px 9px;
+        border-radius: 6px;
+        letter-spacing: 0.3px;
+    }
+    .badge-condition.is-baru {
+        background: var(--accent-soft);
+        color: var(--accent);
+    }
+    .badge-condition.is-bekas {
+        background: #f1f1f1;
+        color: var(--muted);
+    }
+
+    .condition-filter .btn {
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        padding: 6px 16px;
+        border: 1px solid var(--line);
+        color: var(--muted);
+    }
+    .condition-filter .btn.active-filter {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+    }
 </style>
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="fw-bold m-0">
+        <h3 class="fw-bold m-0" style="color: var(--ink);">
             {% if search_query %}
-                <i class="fa-solid fa-magnifying-glass text-primary me-2"></i>Hasil Pencarian: "{{ search_query }}"
+                <i class="fa-solid fa-magnifying-glass me-2" style="color: var(--accent);"></i>Hasil Pencarian: "{{ search_query }}"
             {% elif selected_category %}
-                <i class="fa-solid fa-filter text-success me-2"></i>Kategori: {{ selected_category }}
+                <i class="fa-solid fa-filter me-2" style="color: var(--accent);"></i>Kategori: {{ selected_category }}
             {% else %}
-                <i class="fa-solid fa-fire text-danger me-2"></i>Produk Terbaru
+                <i class="fa-solid fa-fire me-2" style="color: var(--accent);"></i>Produk Terbaru
             {% endif %}
         </h3>
         {% if search_query or selected_category or selected_condition %}
-            <a href="{% url 'home' %}" class="btn btn-sm btn-outline-danger">Reset Semua</a>
+            <a href="{% url 'home' %}" class="btn btn-sm" style="border: 1px solid var(--line); color: var(--muted); border-radius: 999px;">Reset Semua</a>
         {% endif %}
     </div>
 
-    <div class="d-flex gap-2 align-items-center mb-4 pb-2 border-bottom">
-        <span class="text-muted small fw-bold">Kondisi:</span>
-        <a href="?{% if selected_category %}category={{ selected_category|urlencode }}&{% endif %}condition=baru" 
-           class="btn btn-sm {% if selected_condition == 'baru' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Baru</a>
-        <a href="?{% if selected_category %}category={{ selected_category|urlencode }}&{% endif %}condition=mulus" 
-           class="btn btn-sm {% if selected_condition == 'mulus' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Mulus</a>
-        <a href="?{% if selected_category %}category={{ selected_category|urlencode }}&{% endif %}condition=bagus" 
-           class="btn btn-sm {% if selected_condition == 'bagus' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Bagus</a>
+    <div class="d-flex gap-2 align-items-center mb-4 pb-3 condition-filter" style="border-bottom: 1px solid var(--line);">
+        <span class="text-muted small fw-bold me-1">Kondisi:</span>
+        <a href="?{% if selected_category %}category={{ selected_category|urlencode }}&{% endif %}condition=baru"
+           class="btn btn-sm {% if selected_condition == 'baru' %}active-filter{% endif %}">Baru</a>
+        <a href="?{% if selected_category %}category={{ selected_category|urlencode }}&{% endif %}condition=mulus"
+           class="btn btn-sm {% if selected_condition == 'mulus' %}active-filter{% endif %}">Mulus</a>
+        <a href="?{% if selected_category %}category={{ selected_category|urlencode }}&{% endif %}condition=bagus"
+           class="btn btn-sm {% if selected_condition == 'bagus' %}active-filter{% endif %}">Bagus</a>
     </div>
-    
+
     <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
         {% for product in products %}
             <div class="col">
@@ -57,19 +153,23 @@
                             <div class="reverb-price-tag">Rp {{ product.price|floatformat:0|intcomma|replace_commas }}</div>
                         </div>
                         <div class="p-3">
-                            <h5 class="product-title mb-1">{{ product.name }}</h5>
+                            <h5 class="product-title mb-2">{{ product.name }}</h5>
                             <div class="d-flex align-items-center gap-1 mb-2">
-                                <span class="badge {% if product.condition == 'baru' %}bg-success{% else %}bg-dark{% endif %}" style="font-size: 10px; padding: 3px 6px;">{{ product.get_condition_display }}</span>
+                                <span class="badge-condition {% if product.condition == 'baru' %}is-baru{% else %}is-bekas{% endif %}">
+                                    {{ product.get_condition_display }}
+                                </span>
                             </div>
-                            <p class="text-muted mb-0" style="font-size: 12px;"><i class="fa-solid fa-location-dot me-1 text-secondary"></i>{{ product.location }}</p>
+                            <p class="mb-0" style="font-size: 12px; color: var(--muted);">
+                                <i class="fa-solid fa-location-dot me-1"></i>{{ product.location }}
+                            </p>
                         </div>
                     </div>
                 </a>
             </div>
         {% empty %}
             <div class="col-12 text-center py-5">
-                <i class="fa-regular fa-folder-open text-muted mb-3" style="font-size: 3rem;"></i>
-                <p class="text-muted">Tidak ada produk dengan kriteria tersebut.</p>
+                <i class="fa-regular fa-folder-open mb-3" style="font-size: 3rem; color: var(--line);"></i>
+                <p style="color: var(--muted);">Tidak ada produk dengan kriteria tersebut.</p>
             </div>
         {% endfor %}
     </div>
@@ -118,5 +218,5 @@
 
         </ul>
     </nav>
-    {% endif %}
+{% endif %}
 {% endblock %}

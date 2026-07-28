@@ -6,12 +6,20 @@
 
 {% block content %}
 <style>
-    /* Styling khusus efek zoom kaca pembesar ala Reverb */
+    :root {
+        --accent: #f05a28;
+        --accent-soft: #fdece3;
+        --ink: #1a1a1a;
+        --muted: #767676;
+        --line: #ececec;
+    }
+
     .zoom-container {
         position: relative;
         overflow: hidden;
         cursor: zoom-in;
         background-color: #fff;
+        border-radius: 12px;
     }
     .zoom-container img {
         transition: transform 0.1s ease-out;
@@ -22,59 +30,61 @@
     }
     .zoom-icon {
         position: absolute;
-        top: 15px;
-        right: 15px;
-        background: rgba(255, 255, 255, 0.85);
+        top: 15px; right: 15px;
+        background: rgba(255,255,255,0.9);
         border-radius: 50%;
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        width: 36px; height: 36px;
+        display: flex; align-items: center; justify-content: center;
+        color: var(--muted);
         pointer-events: none;
         z-index: 5;
     }
     .thumbnail-img {
-        width: 70px;
-        height: 70px;
+        width: 68px; height: 68px;
         object-fit: cover;
         cursor: pointer;
+        border-radius: 8px;
         border: 2px solid transparent;
-        transition: 0.2s;
+        transition: 0.15s ease;
+        opacity: 0.7;
     }
     .thumbnail-img.active, .thumbnail-img:hover {
-        border-color: #f05a28;
+        border-color: var(--accent);
+        opacity: 1;
     }
     .nav-arrow {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        background: rgba(255, 255, 255, 0.9);
-        border: 1px solid #ddd;
+        background: rgba(255,255,255,0.92);
+        border: none;
         border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        width: 38px; height: 38px;
+        display: flex; align-items: center; justify-content: center;
         cursor: pointer;
         z-index: 10;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        transition: 0.2s;
+        color: var(--ink);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: 0.15s ease;
     }
-    .nav-arrow:hover {
-        background: #f05a28;
-        color: white;
-        border-color: #f05a28;
-    }
+    .nav-arrow:hover { background: var(--accent); color: #fff; }
     .arrow-left { left: 10px; }
     .arrow-right { right: 10px; }
+
+    .badge-condition {
+        font-size: 12px;
+        font-weight: 700;
+        padding: 6px 14px;
+        border-radius: 8px;
+    }
+    .badge-condition.is-baru { background: var(--accent-soft); color: var(--accent); }
+    .badge-condition.is-bekas { background: #f1f1f1; color: var(--muted); }
+    .badge-brand { background: #f1f1f1; color: var(--ink); font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 8px; }
 </style>
 
 <div class="row mt-3">
     <div class="col">
-        <a href="/" class="btn btn-sm btn-outline-secondary fw-bold">
+        <a href="/" class="btn btn-sm fw-bold" style="border: 1px solid var(--line); color: var(--muted); border-radius: 999px;">
             <i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Beranda
         </a>
     </div>
@@ -88,9 +98,9 @@
                 <i class="fa-solid fa-chevron-left"></i>
             </div>
 
-            <div class="zoom-container rounded-3 text-center" id="zoomWrapper">
+            <div class="zoom-container text-center" id="zoomWrapper">
                 <div class="zoom-icon">
-                    <i class="fa-solid fa-magnifying-glass text-dark"></i>
+                    <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
                 {% if product.image %}
                     <img src="{{ product.image.url }}" id="mainProductImg" alt="{{ product.name }}">
@@ -107,11 +117,11 @@
 
             <div class="d-flex gap-2 mt-3 flex-wrap justify-content-center" id="thumbnailRow">
                 {% if product.image %}
-                    <img src="{{ product.image.url }}" class="thumbnail-img rounded bg-light active" onclick="changeImage(this.src, 0)">
+                    <img src="{{ product.image.url }}" class="thumbnail-img active" onclick="changeImage(this.src, 0)">
                 {% endif %}
 
                 {% for extra in product.images.all %}
-                    <img src="{{ extra.image.url }}" class="thumbnail-img rounded bg-light" onclick="changeImage(this.src, {{ forloop.counter }})">
+                    <img src="{{ extra.image.url }}" class="thumbnail-img" onclick="changeImage(this.src, {{ forloop.counter }})">
                 {% endfor %}
             </div>
         </div>
@@ -119,32 +129,31 @@
 
     <div class="col-md-5">
         <div class="card border-0 shadow-sm rounded-3 p-4 bg-white h-100">
-            <div class="mb-3 d-flex gap-1 flex-wrap">
-                <span class="badge {% if product.condition == 'baru' %}bg-success{% else %}bg-dark{% endif %} fs-6 px-3 py-2">
+            <div class="mb-3 d-flex gap-2 flex-wrap">
+                <span class="badge-condition {% if product.condition == 'baru' %}is-baru{% else %}is-bekas{% endif %}">
                     {{ product.get_condition_display }}
                 </span>
                 {% if product.brand %}
-                    <span class="badge bg-secondary fs-6 px-3 py-2">{{ product.brand.name }}</span>
+                    <span class="badge-brand">{{ product.brand.name }}</span>
                 {% endif %}
             </div>
 
-            <h1 class="fw-bold text-dark mb-2 fs-2">{{ product.name }}</h1>
+            <h1 class="fw-bold mb-2 fs-2" style="color: var(--ink);">{{ product.name }}</h1>
 
-            <p class="text-muted small mb-4">
+            <p class="small mb-4" style="color: var(--muted);">
                 <i class="fa-solid fa-location-dot me-1"></i>{{ product.location }} &bull;
                 <i class="fa-regular fa-clock me-1"></i>{{ product.created_at|date:"d M Y" }} &bull;
-                <!-- LINK PROFIL AKTIF DI SINI -->
                 <i class="fa-solid fa-user me-1"></i>Penjual:
-                <a href="{% url 'seller_profile' product.seller.username %}" class="fw-bold text-decoration-none text-primary">
+                <a href="{% url 'seller_profile' product.seller.username %}" class="fw-bold text-decoration-none" style="color: var(--accent);">
                     {{ product.seller.username }}
                 </a>
             </p>
 
-            <hr class="text-muted opacity-25">
+            <hr style="border-color: var(--line);">
 
             <div class="my-4">
-                <label class="text-muted small d-block mb-1">Harga Terbuka</label>
-                <h2 class="text-danger fw-bold display-6">Rp {{ product.price|floatformat:0|intcomma|replace_commas }}</h2>
+                <label class="small d-block mb-1" style="color: var(--muted);">Harga Terbuka</label>
+                <h2 class="fw-bold display-6" style="color: var(--ink);">Rp {{ product.price|floatformat:0|intcomma|replace_commas }}</h2>
             </div>
 
             <div class="d-grid gap-2 mt-auto">
@@ -173,8 +182,8 @@
 <div class="row mt-4 mb-5">
     <div class="col-md-7">
         <div class="card border-0 shadow-sm rounded-3 p-4 bg-white">
-            <h4 class="fw-bold text-dark mb-3">Deskripsi Alat Musik</h4>
-            <p class="text-secondary lh-base mb-0" style="white-space: pre-line;">{{ product.description }}</p>
+            <h4 class="fw-bold mb-3" style="color: var(--ink);">Deskripsi Alat Musik</h4>
+            <p class="lh-base mb-0" style="white-space: pre-line; color: var(--muted);">{{ product.description }}</p>
         </div>
     </div>
 </div>
