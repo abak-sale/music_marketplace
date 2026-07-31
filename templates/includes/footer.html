@@ -1,52 +1,91 @@
+{% load static %}
 {% load custom_tags %}
 {% get_categories as categories %}
 
-<footer class="bg-dark text-white pt-5 pb-4 mt-auto border-top border-secondary">
+<footer class="bg-white text-dark pt-4 pb-3 mt-auto border-top" style="border-top: 3px solid #f05a28 !important;">
     <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mt-3">
-                <h5 class="text-uppercase mb-4 font-weight-bold text-warning">Abak Sale</h5>
-                <p class="small text-muted text-light">
-                    Marketplace alat musik bekas berkualitas terbesar dan terpercaya. Temukan gitar, bass, efek, dan perlengkapan musik impianmu dengan harga terbaik.
+        <div class="row gy-3">
+            <div class="col-md-3 col-lg-3">
+                <img src="{% static 'images/logo.png' %}" alt="Abak Sale Logo" height="36" class="mb-2">
+                <p class="fw-bold text-dark small mb-2">Abak Sale Marketplace</p>
+                <p class="small text-secondary mb-0" style="max-width: 250px;">
+                    Platform jual beli alat musik bekas untuk membantu kamu menemukan gitar, bass, dan efek impianmu.
                 </p>
             </div>
 
-            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-                <h6 class="text-uppercase mb-4 font-weight-bold text-warning">Jelajahi</h6>
+            <div class="col-6 col-md-3 col-lg-3">
+                <h6 class="fw-bold text-dark mb-2">Jelajahi</h6>
                 {% for cat in categories %}
-                    <p class="small">
-                        <a href="{% url 'home' %}?category={{ cat|urlencode }}" class="text-white text-decoration-none text-muted-hover">
+                    <p class="small mb-1">
+                        <a href="{% url 'home' %}?category={{ cat|urlencode }}" class="text-secondary text-decoration-none footer-link">
                             {{ cat }}
                         </a>
                     </p>
                 {% endfor %}
             </div>
 
-            <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-                <h6 class="text-uppercase mb-4 font-weight-bold text-warning">Hubungi Kami</h6>
-                <p class="small text-muted"><i class="fas fa-home me-2"></i> Batam, Kepulauan Riau</p>
-                <p class="small text-muted"><i class="fab fa-whatsapp me-2"></i> Kontak via WhatsApp</p>
+            <div class="col-6 col-md-3 col-lg-3">
+                <h6 class="fw-bold text-dark mb-2">Marketplace</h6>
+                <p class="small mb-1"><a href="{% url 'home' %}" class="text-secondary text-decoration-none footer-link">Semua Produk</a></p>
+                <p class="small mb-1"><a href="#" class="text-secondary text-decoration-none footer-link">Cara Berjualan</a></p>
+                <p class="small mb-1"><a href="#" class="text-secondary text-decoration-none footer-link">Tentang Kami</a></p>
+            </div>
+
+            <div class="col-md-3 col-lg-3">
+                <h6 class="fw-bold text-dark mb-2">Bantuan</h6>
+                <p class="small mb-1"><a href="#" class="text-secondary text-decoration-none footer-link">Hubungi Kami</a></p>
+                <p class="small mb-1"><a href="#" class="text-secondary text-decoration-none footer-link">Syarat dan Ketentuan</a></p>
+                <p class="small mb-1"><a href="#" class="text-secondary text-decoration-none footer-link">Kebijakan Privasi</a></p>
             </div>
         </div>
 
-        <hr class="mb-4 bg-secondary">
+        <div class="d-flex flex-wrap align-items-center gap-4 mt-3">
+            <span class="small text-secondary">
+                <i class="fas fa-location-dot me-2" style="color: #f05a28;"></i>Batam, Kepulauan Riau
+            </span>
+            <span class="small text-secondary">
+                <i class="fab fa-whatsapp me-2" style="color: #25D366;"></i>Kontak via WhatsApp
+            </span>
+        </div>
 
-        <div class="row align-items-center">
-            <div class="col-md-7 col-lg-8">
-                <p class="small text-muted">
-                    © 2026 <strong>Abak Sale Marketplace</strong>. Hak Cipta Dilindungi.
+        <hr class="my-3" style="border-color: #e5e5e5;">
+
+        <div class="row align-items-center g-2">
+            <div class="col-md-4 d-none d-md-block"></div>
+            <div class="col-md-4 text-center">
+                <p class="small text-secondary mb-0">
+                    &copy; 2026 <strong class="text-dark">Abak Sale Marketplace</strong>. Hak Cipta Dilindungi.
                 </p>
             </div>
-            <div class="col-md-5 col-lg-4 text-end">
-                <ul class="list-unstyled list-inline mb-0">
-                    <li class="list-inline-item">
-                        <a href="#" class="btn-floating btn-sm text-white" style="font-size: 18px;"><i class="fab fa-facebook"></i></a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="#" class="btn-floating btn-sm text-white" style="font-size: 18px;"><i class="fab fa-instagram"></i></a>
-                    </li>
-                </ul>
+            <div class="col-md-4 text-center text-md-end">
+                <a href="#" class="footer-social" style="background: #1877F2;"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="footer-social" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);"><i class="fab fa-instagram"></i></a>
             </div>
         </div>
     </div>
 </footer>
+
+<style>
+    .footer-link:hover {
+        color: #f05a28 !important;
+        padding-left: 3px;
+        transition: 0.2s;
+    }
+    .footer-social {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 14px;
+        text-decoration: none;
+        margin-left: 8px;
+        transition: transform 0.2s;
+    }
+    .footer-social:hover {
+        transform: translateY(-3px);
+        color: #fff;
+    }
+</style>
